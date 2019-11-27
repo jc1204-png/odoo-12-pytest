@@ -7,9 +7,7 @@ before_install:
   - docker build -t jc1204/odoo-12-pytest .
 
 script:
-  - travis env set DOCKER_USERNAME docker_username
-  - travis env set DOCKER_PASSWORD docker_secret
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - echo "$docker_secret" | docker login -u "$docker_username" --password-stdin
 deploy:
   provider: script
   script: bash docker_push
