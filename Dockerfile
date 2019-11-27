@@ -23,6 +23,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y  \
     && git clone --single-branch --branch "12.0" https://github.com/OCA/crm.git /mnt/odoo/OCA/crm \
     && chown odoo: -R /mnt/odoo/OCA
 
-COPY ./run_odoo_tests.sh  /
+COPY ./run_odoo_tests.sh ./wait-for-it.sh /
 RUN chmod +x ./run_odoo_tests.sh
 
