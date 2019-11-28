@@ -1,10 +1,15 @@
-# odoo-12-pytest
-> Docker image to run pytest on modules directory
-> docker odoo pytest
+
+[![Project Status](http://opensource.box.com/badges/active.svg)](http://opensource.box.com/badges)
+=======
 
 
+Docker image : Odoo 12 & Pytest Odoo plugin
+==================================
 
-## How to use
+- <a href="https://github.com/camptocamp/pytest-odoo.git" target="_blank">pytest-odoo</a>
+
+## Usage
+
 ### Bitbucket pipeline
 > Add host to container 
 How to connect to postgresql from container : https://community.atlassian.com/t5/Bitbucket-Pipelines-questions/Pipelines-How-to-connect-to-a-Postgres-service-from-within/qaq-p/1096240
