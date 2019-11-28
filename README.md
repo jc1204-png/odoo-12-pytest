@@ -1,6 +1,6 @@
 # odoo-12-pytest
 > Docker image to run pytest on modules directory
-odoo pytest
+> docker odoo pytest
 
 
 
