@@ -1,6 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 
 set +e
+
+green() {
+  echo -e "\\e[32m${1}\\e[0m"
+}
+
+red() {
+  echo -e "\\e[31m${1}\\e[0m"
+}
 
 # $MODULES_PATH
 if [ -z "$MODULES_PATH" ] 
@@ -44,22 +52,28 @@ then
 	export COV_FAIL_UNDER="95"
 fi
 
-cd "$MODULES_PATH"
+cd "$MODULES_PATH" || exit
 echo 
-export MODULES=$(ls -md */ | sed 's/\///g' | sed 's/, /,/g' | sed -z 's/\n//g')
+MODULES=$(find ./* -maxdepth 0 -type d -print0 -and -not -path \*/.\* | xargs -0 echo | sed s'/ /,/g' | sed s'/\.\///g')
+export MODULES=$MODULES
 echo "-------------------------------------------"
 echo "Modules to test :"
-echo "$MODULES"
+green "$MODULES"
 echo
+if [ -z "$MODULES" ]
+then
+	red "Modules list is empty"
+	exit 1
+fi
 
 
-echo " odoo -d $DATABASE ..........."
+green " odoo -d $DATABASE ..........."
 echo
 /wait-for-it.sh $DB_HOST:$DATABASE_PORT -t 10 -- 
 odoo -d "$DATABASE" --addons-path . -i "$MODULES" --db_host "$DB_HOST" -r "$DB_USER" -w "$DB_PASSWORD" --log-level info --stop-after-init --save -c /etc/odoo/odoo.conf
 
 
-echo "python3 -m pytest ..........."
+green "python3 -m pytest ..........."
 echo
 python3 -m pytest -s --odoo-database="$DATABASE" --odoo-log-level=debug --junitxml=./.test-reports/junit.xml --odoo-config=/etc/odoo/odoo.conf --cov-fail-under=$COV_FAIL_UNDER --cov .
 
